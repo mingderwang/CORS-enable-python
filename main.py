@@ -16,7 +16,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def send_dict_response(self, d):
         """ Sends a dictionary (JSON) back to the client """
-        self.wfile.write(bytes(dumps(d), "utf8"))
+        self.wfile.write(bytes(json.dumps(d), "utf8"))
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -34,10 +34,10 @@ class RequestHandler(BaseHTTPRequestHandler):
             ensure_ascii=False)
 
         self.send_response(200)
+        self._send_cors_headers()
         self.send_header('Content-type', 'application/json')
         self.end_headers()
         self.wfile.write(result.encode(encoding='utf_8'))
-        return
 
     def do_POST(self):
         self.send_response(200)
